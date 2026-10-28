@@ -1,0 +1,125 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: smartcity
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    hostname: namenode
+    environment:
+      - CLUSTER_NAME=smartcity
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    hostname: datanode
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    depends_on:
+      - namenode
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    hostname: datanode2
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    volumes:
+      - hadoop_datanode2:/hadoop/dfs/data
+    depends_on:
+      - namenode
+
+  datanode3:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode3
+    hostname: datanode3
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    volumes:
+      - hadoop_datanode3:/hadoop/dfs/data
+    depends_on:
+      - namenode
+
+
+  spark:
+    image: apache/spark:3.5.0-python3
+    container_name: spark
+    hostname: spark
+    command: >
+      bash -c "/opt/spark/sbin/start-master.sh && tail -f /opt/spark/logs/*"
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - ./spark_jobs:/opt/spark/jobs
+      - C:/smartcity-jars:/opt/spark/jars-extra
+    depends_on:
+      - mongo
+      - postgres
+      - namenode
+
+  spark-worker:
+    image: apache/spark:3.5.0-python3
+    container_name: spark-worker
+    hostname: spark-worker
+    command: >
+      bash -c "/opt/spark/sbin/start-worker.sh spark://spark:7077 && tail -f /opt/spark/logs/*"
+    volumes:
+      - ./spark_jobs:/opt/spark/jobs
+      - C:/smartcity-jars:/opt/spark/jars-extra
+    depends_on:
+      - spark
+
+
+
+
+  jupyter:
+    image: jupyter/pyspark-notebook:latest
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    volumes:
+      - ./spark_jobs:/home/jovyan/work
+    depends_on:
+      - spark
+
+
+
+
+volumes:
+  postgres_data:
+  mongo_data:
+  hadoop_namenode:
+  hadoop_datanode:
+  hadoop_datanode2:
+  hadoop_datanode3:

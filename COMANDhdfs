@@ -1,0 +1,100 @@
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker compose ps
+NAME       IMAGE                                             COMMAND                  SERVICE    CREATED        STATUS                            PORTS
+datanode   bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   datanode   39 hours ago   Up 4 seconds (health: starting)   9864/tcp
+jupyter    jupyter/pyspark-notebook:latest                   "tini -g -- start-no…"   jupyter    38 hours ago   Up 4 seconds (health: starting)   0.0.0.0:8888->8888/tcp, [::]:8888->8888/tcp
+mongo      mongo:7                                           "docker-entrypoint.s…"   mongo      39 hours ago   Up 5 seconds                      0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+namenode   bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8   "/entrypoint.sh /run…"   namenode   39 hours ago   Up 5 seconds (health: starting)   0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp, 0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp
+postgres   postgres:16                                       "docker-entrypoint.s…"   postgres   39 hours ago   Up 5 seconds                      0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+spark      apache/spark:3.5.1-python3                        "/opt/entrypoint.sh …"   spark      38 hours ago   Up 5 seconds                      0.0.0.0:7077->7077/tcp, [::]:7077->7077/tcp, 0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker compose up -d namenode datanode
+[+] up 2/2
+ ✔ Container datanode Running                                                                                    0.0s
+ ✔ Container namenode Running                                                                                    0.0s
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -mkdir -p /trafico
+>> docker exec namenode hdfs dfs -mkdir -p /aire
+>> docker exec namenode hdfs dfs -mkdir -p /historico
+>> docker exec namenode hdfs dfs -mkdir -p /resultados
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -chmod -R 777 /
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -ls /
+Found 4 items
+drwxrwxrwx   - root   supergroup          0 2026-10-07 17:28 /aire
+drwxrwxrwx   - root   supergroup          0 2026-10-07 17:28 /historico
+drwxrwxrwx   - jovyan supergroup          0 2026-10-06 03:22 /resultados
+drwxrwxrwx   - root   supergroup          0 2026-10-06 02:12 /trafico
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker cp datos_limpios.csv namenode:/tmp/
+Successfully copied 108MB (transferred 108MB) to namenode:/tmp/
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -put -f /tmp/datos_limpios.csv /historico/
+2026-10-07 17:30:02,900 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -ls /historico
+Found 1 items
+-rw-r--r--   3 root supergroup  107962463 2026-10-07 17:30 /historico/datos_limpios.csv
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs fsck /historico/datos_limpios.csv -files -blocks -locations
+Connecting to namenode via http://namenode:9870/fsck?ugi=root&files=1&blocks=1&locations=1&path=%2Fhistorico%2Fdatos_limpios.csv
+FSCK started by root (auth:SIMPLE) from /172.18.0.4 for path /historico/datos_limpios.csv at Wed Oct 07 17:30:41 UTC 2026
+/historico/datos_limpios.csv 107962463 bytes, replicated: replication=3, 1 block(s):  Under replicated BP-1343413884-172.18.0.3-1791252545394:blk_1073741828_1004. Target Replicas is 3 but found 1 live replica(s), 0 decommissioned replica(s), 0 decommissioning replica(s).
+0. BP-1343413884-172.18.0.3-1791252545394:blk_1073741828_1004 len=107962463 Live_repl=1  [DatanodeInfoWithStorage[172.18.0.6:9866,DS-f123d05d-ecce-479a-ab39-70c2a2e39450,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:  1
+ Number of racks:               1
+ Total dirs:                    0
+ Total symlinks:                0
+
+Replicated Blocks:
+ Total size:    107962463 B
+ Total files:   1
+ Total blocks (validated):      1 (avg. block size 107962463 B)
+ Minimally replicated blocks:   1 (100.0 %)
+ Over-replicated blocks:        0 (0.0 %)
+ Under-replicated blocks:       1 (100.0 %)
+ Mis-replicated blocks:         0 (0.0 %)
+ Default replication factor:    3
+ Average block replication:     1.0
+ Missing blocks:                0
+ Corrupt blocks:                0
+ Missing replicas:              2 (66.666664 %)
+
+Erasure Coded Block Groups:
+ Total size:    0 B
+ Total files:   0
+ Total block groups (validated):        0
+ Minimally erasure-coded block groups:  0
+ Over-erasure-coded block groups:       0
+ Under-erasure-coded block groups:      0
+ Unsatisfactory placement block groups: 0
+ Average block group size:      0.0
+ Missing block groups:          0
+ Corrupt block groups:          0
+ Missing internal blocks:       0
+FSCK ended at Wed Oct 07 17:30:41 UTC 2026 in 4 milliseconds
+
+
+The filesystem under path '/historico/datos_limpios.csv' is HEALTHY
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -cat /historico/datos_limpios.csv | Select-Object -First 5
+2026-10-07 17:32:19,817 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+sensor_nombre,zona,fecha,pm25,pm10,no2,o3,co,carros,aqi,temperatura,congestion_score,emission_estimate,fuel_waste_estimate,accidente,es_fin_semana,latitud,longitud
+INT_001,Financial District,2026-01-01 00:00:00,,,,,,162.0,52.0,11.1,16.8,39.14,8.53,0,0,40.757551,-73.990504
+INT_001,Financial District,2026-01-01 01:00:00,,,,,,150.0,58.0,18.2,18.4,36.09,7.83,0,0,40.757551,-73.990504
+INT_001,Financial District,2026-01-01 02:00:00,,,,,,186.0,39.0,22.0,20.7,44.01,9.39,0,0,40.757551,-73.990504
+INT_001,Financial District,2026-01-01 03:00:00,,,,,,162.0,57.0,20.5,17.8,38.47,8.24,0,0,40.757551,-73.990504
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -get /historico/datos_limpios.csv /tmp/descargado.csv
+>> docker exec namenode ls -la /tmp/descargado.csv
+2026-10-07 17:32:39,797 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+-rw-r--r-- 1 root root 107962463 Oct  7 17:32 /tmp/descargado.csv
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode bash -c "echo 'test' > /tmp/test.txt"
+>> docker exec namenode hdfs dfs -put /tmp/test.txt /trafico/
+>> docker exec namenode hdfs dfs -ls /trafico
+>> docker exec namenode hdfs dfs -rm /trafico/test.txt
+>> docker exec namenode hdfs dfs -ls /trafico
+2026-10-07 17:33:36,430 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+Found 2 items
+-rwxrwxrwx   3 root supergroup    4551254 2026-10-06 02:12 /trafico/datos_limpios.csv
+-rw-r--r--   3 root supergroup          5 2026-10-07 17:33 /trafico/test.txt
+Deleted /trafico/test.txt
+Found 1 items
+-rwxrwxrwx   3 root supergroup    4551254 2026-10-06 02:12 /trafico/datos_limpios.csv
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity> docker exec namenode hdfs dfs -rm /trafico/datos_limpios.csv
+>> docker exec namenode hdfs dfs -ls /trafico
+Deleted /trafico/datos_limpios.csv
+PS C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity>

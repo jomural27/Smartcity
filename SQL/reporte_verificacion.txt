@@ -1,0 +1,1181 @@
+﻿0. Estado de Docker
+postgres Up 3 hours
+
+1. Creando copia smartcity_test
+DROP DATABASE
+NOTICE:  database "smartcity_test" does not exist, skipping
+CREATE DATABASE
+Filas de medicion en la copia (debe ser 1062858):
+ 1062858
+
+
+2. Probando 01_ddl.sql en base VACIA
+NOTICE:  database "smartcity_vacia" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+
+=================== 01_ddl.sql  (base: smartcity_vacia) ===================
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+SELECT 0
+CREATE INDEX
+CREATE FUNCTION
+>>> 01_ddl.sql : SIN ERRORES
+
+=================== 03_migraciones.sql  (base: smartcity_test) ===================
+UPDATE 0
+BEGIN
+SELECT 0
+DELETE 0
+CREATE TABLE
+psql:/tmp/03_migraciones.sql:44: NOTICE:  relation "medicion_2016" already exists, skipping
+CREATE TABLE
+psql:/tmp/03_migraciones.sql:45: NOTICE:  relation "medicion_2017" already exists, skipping
+CREATE TABLE
+psql:/tmp/03_migraciones.sql:46: NOTICE:  relation "medicion_2018" already exists, skipping
+CREATE TABLE
+psql:/tmp/03_migraciones.sql:47: NOTICE:  relation "medicion_2019" already exists, skipping
+psql:/tmp/03_migraciones.sql:48: NOTICE:  relation "medicion_2020" already exists, skipping
+CREATE TABLE
+INSERT 0 0
+DROP TABLE
+COMMIT
+   particion   | filas  
+---------------+--------
+ medicion_2016 | 387578
+ medicion_2017 |   6401
+ medicion_2018 |  10051
+ medicion_2019 |   9482
+ medicion_2020 | 122869
+ medicion_2021 | 180774
+ medicion_2022 |   2142
+ medicion_2023 |  86397
+ medicion_2024 |  20018
+ medicion_2025 |  28215
+ medicion_2026 | 208931
+(11 rows)
+
+psql:/tmp/03_migraciones.sql:62: ERROR:  relation "medicion_backup" does not exist
+LINE 3: SELECT 'medicion_backup', COUNT(*) FROM medicion_backup;
+                                                ^
+psql:/tmp/03_migraciones.sql:62: STATEMENT:  SELECT 'medicion' AS tabla, COUNT(*) AS filas FROM medicion
+UNION ALL
+SELECT 'medicion_backup', COUNT(*) FROM medicion_backup;
+UPDATE 38
+      distrito      | zonas 
+--------------------+-------
+ SmartCity District |     6
+ CDMX               |    32
+(2 rows)
+
+ id_zona | nombre_zona |     latitud     |     longitud     | distrito | sensores 
+---------+-------------+-----------------+------------------+----------+----------
+      32 | FES Aragon  |         19.4525 |          -99.086 | CDMX     |        4
+      36 | FES Arag├│n  | 19.473691944444 | -99.046175833333 | CDMX     |        4
+(2 rows)
+
+DO
+DO
+ setval  
+---------
+ 1062858
+(1 row)
+
+ANALYZE
+REFRESH MATERIALIZED VIEW
+ tablename |      indexname      
+-----------+---------------------
+ medicion  | idx_medicion_fecha
+ medicion  | idx_medicion_pm25
+ medicion  | idx_medicion_sensor
+ medicion  | medicion_pkey
+(4 rows)
+
+      conname       |                      definicion                      
+--------------------+------------------------------------------------------
+ medicion_pkey      | PRIMARY KEY (id_medicion, fecha)
+ fk_medicion_sensor | FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+(2 rows)
+
+>>> 03_migraciones.sql : 1 LINEA(S) CON ERROR
+
+=================== 02_datos_referencia.sql  (base: smartcity_test) ===================
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+>>> 02_datos_referencia.sql : SIN ERRORES
+
+=================== 04_consultas_obligatorias.sql  (base: smartcity_test) ===================
+ tipo_sensor  | cantidad 
+--------------+----------
+ calidad_aire |      184
+ trafico      |      100
+ test         |        1
+(3 rows)
+
+               nombre_zona                |      distrito      | cantidad_sensores 
+------------------------------------------+--------------------+-------------------
+ Suburban North                           | SmartCity District |                26
+ Financial District                       | SmartCity District |                25
+ Downtown Core                            | SmartCity District |                22
+ Tech Park                                | SmartCity District |                11
+ Camarones                                | CDMX               |                10
+ Merced                                   | CDMX               |                10
+ Pedregal                                 | CDMX               |                10
+ San Agust├¡n                              | CDMX               |                10
+ Santa Fe                                 | CDMX               |                10
+ Tlalnepantla                             | CDMX               |                10
+ UAM Iztapalapa                           | CDMX               |                10
+ Nezahualc├│yotl                           | CDMX               |                 9
+ Residential West                         | SmartCity District |                 9
+ Atizap├ín                                 | CDMX               |                 8
+ FES Acatl├ín                              | CDMX               |                 8
+ Industrial East                          | SmartCity District |                 8
+ Tlahuac                                  | CDMX               |                 8
+ UAM Xochimilco                           | CDMX               |                 8
+ Benito Ju├írez                            | CDMX               |                 5
+ Hospital General de M├®xico               | CDMX               |                 5
+ Miguel Hidalgo                           | CDMX               |                 5
+ Xalostoc                                 | CDMX               |                 5
+ Centro de Ciencias de la Atm├│sfera       | CDMX               |                 4
+ Cuajimalpa                               | CDMX               |                 4
+ FES Aragon                               | CDMX               |                 4
+ FES Arag├│n                               | CDMX               |                 4
+ Gustavo A. Madero                        | CDMX               |                 4
+ Iztacalco                                | CDMX               |                 4
+ La Presa                                 | CDMX               |                 4
+ Santiago Acahualtepe                     | CDMX               |                 4
+ Santiago Acahualtepec                    | CDMX               |                 4
+ Tultitl├ín                                | CDMX               |                 4
+ Los Laureles                             | CDMX               |                 3
+ Montecillo                               | CDMX               |                 3
+ Rincon del Bosque, CDMX                  | CDMX               |                 3
+ National Autonomous University of Mexico | CDMX               |                 2
+ Mexico City                              | CDMX               |                 1
+ SPARTAN - Mexico City                    | CDMX               |                 1
+(38 rows)
+
+  estado  | cantidad 
+----------+----------
+ activo   |      284
+ inactivo |        1
+(2 rows)
+
+   organismo   |          responsable           | sensores_asignados 
+---------------+--------------------------------+--------------------
+ MINAE         | Ministro de Ambiente y Energ├¡a |                185
+ MOPT          | Ministro de Obras P├║blicas     |                 98
+ Municipalidad | Alcalde Municipal              |                  1
+ CNFL          | Gerente de Energ├¡a             |                  1
+(4 rows)
+
+    nombre_zona     | total_sensores 
+--------------------+----------------
+ Suburban North     |             26
+ Financial District |             25
+ Downtown Core      |             22
+ Tech Park          |             11
+ UAM Iztapalapa     |             10
+ San Agust├¡n        |             10
+ Camarones          |             10
+ Pedregal           |             10
+ Tlalnepantla       |             10
+ Merced             |             10
+(10 rows)
+
+ anio | sensores_instalados 
+------+---------------------
+ 2016 |                  81
+ 2017 |                   2
+ 2019 |                   1
+ 2020 |                  76
+ 2021 |                   1
+ 2022 |                   9
+ 2023 |                   7
+ 2024 |                   6
+ 2025 |                   2
+ 2026 |                 100
+(10 rows)
+
+     nombre      | tipo_sensor |  estado  |    nombre_zona     
+-----------------+-------------+----------+--------------------
+ S-TEST-INACTIVO | test        | inactivo | Financial District
+(1 row)
+
+    nombre_zona     | total_mediciones | promedio_pm25 | ranking 
+--------------------+------------------+---------------+---------
+ Suburban North     |            53040 |               |       1
+ Tlalnepantla       |            50000 |         23.33 |       2
+ Camarones          |            50000 |         23.20 |       2
+ Pedregal           |            50000 |         17.86 |       2
+ Merced             |            49999 |         25.45 |       5
+ San Agust├¡n        |            49999 |         21.69 |       5
+ UAM Iztapalapa     |            49998 |         22.83 |       7
+ Financial District |            48960 |               |       8
+ Nezahualc├│yotl     |            45000 |         21.18 |       9
+ Downtown Core      |            44880 |               |      10
+ Tlahuac            |            40000 |               |      11
+ Atizap├ín           |            40000 |               |      11
+ UAM Xochimilco     |            40000 |         20.57 |      11
+ FES Acatl├ín        |            39994 |               |      14
+ Xalostoc           |            25000 |         24.44 |      15
+(15 rows)
+
+               nombre_zona                | promedio_pm25 | promedio_carros | total_mediciones | max_congestion 
+------------------------------------------+---------------+-----------------+------------------+----------------
+ Mexico City                              |         32.47 |                 |             5000 |               
+ National Autonomous University of Mexico |         30.01 |                 |             9022 |               
+ Rincon del Bosque, CDMX                  |         28.35 |                 |             9229 |               
+ Merced                                   |         25.45 |                 |            49999 |               
+ Santiago Acahualtepec                    |         25.10 |                 |            20000 |               
+ Xalostoc                                 |         24.44 |                 |            25000 |               
+ Tlalnepantla                             |         23.33 |                 |            50000 |               
+ Camarones                                |         23.20 |                 |            50000 |               
+ UAM Iztapalapa                           |         22.83 |                 |            49998 |               
+ Hospital General de M├®xico               |         22.64 |                 |            25000 |               
+(10 rows)
+
+  nombre_sensor  |  tipo   
+-----------------+---------
+ INT_043         | trafico
+ INT_045         | trafico
+ INT_046         | trafico
+ INT_047         | trafico
+ INT_050         | trafico
+ INT_055         | trafico
+ INT_056         | trafico
+ INT_062         | trafico
+ INT_081         | trafico
+ INT_089         | trafico
+ INT_090         | trafico
+ INT_094         | trafico
+ INT_096         | trafico
+ INT_099         | trafico
+ INT_001         | trafico
+ INT_003         | trafico
+ INT_005         | trafico
+ INT_008         | trafico
+ INT_016         | trafico
+ INT_017         | trafico
+ INT_021         | trafico
+ INT_029         | trafico
+ INT_030         | trafico
+ INT_031         | trafico
+ S-TEST-INACTIVO | test
+(25 rows)
+
+  nombre_sensor   |     tipo     
+------------------+--------------
+ CDMX_10794_36048 | calidad_aire
+ CDMX_10794_36053 | calidad_aire
+ CDMX_10794_36060 | calidad_aire
+ CDMX_10794_36063 | calidad_aire
+ CDMX_10794_39314 | calidad_aire
+ CDMX_348_5079222 | calidad_aire
+ CDMX_348_5079223 | calidad_aire
+ CDMX_348_5079224 | calidad_aire
+ CDMX_348_5079225 | calidad_aire
+ CDMX_348_5079227 | calidad_aire
+(10 rows)
+
+>>> 04_consultas_obligatorias.sql : SIN ERRORES
+
+=================== 05_consultas_avanzadas.sql  (base: smartcity_test) ===================
+     nombre     | tipo_sensor  | fecha_instalacion 
+----------------+--------------+-------------------
+ CDMX_1090_1948 | calidad_aire | 2016-03-10
+ CDMX_1090_1949 | calidad_aire | 2016-03-10
+ CDMX_1090_1950 | calidad_aire | 2016-03-10
+ CDMX_1134_2038 | calidad_aire | 2016-03-10
+ CDMX_1134_2045 | calidad_aire | 2016-03-10
+ CDMX_1134_2051 | calidad_aire | 2016-03-10
+ CDMX_1367_2448 | calidad_aire | 2016-03-10
+ CDMX_1367_2449 | calidad_aire | 2016-03-10
+ CDMX_1367_2451 | calidad_aire | 2016-03-10
+ CDMX_1367_2452 | calidad_aire | 2016-03-10
+ CDMX_1367_2453 | calidad_aire | 2016-03-10
+ CDMX_1578_2777 | calidad_aire | 2016-03-10
+ CDMX_1604_2829 | calidad_aire | 2016-03-10
+ CDMX_1604_2830 | calidad_aire | 2016-03-10
+ CDMX_1604_2831 | calidad_aire | 2016-03-10
+ CDMX_1659_2936 | calidad_aire | 2016-03-10
+ CDMX_1659_2937 | calidad_aire | 2016-03-10
+ CDMX_1659_2939 | calidad_aire | 2016-03-10
+ CDMX_1659_2940 | calidad_aire | 2016-03-10
+ CDMX_1659_2941 | calidad_aire | 2016-03-10
+(20 rows)
+
+      distrito      
+--------------------
+ CDMX
+ SmartCity District
+(2 rows)
+
+ tipo_sensor  |  estado  
+--------------+----------
+ calidad_aire | activo
+ test         | inactivo
+ trafico      | activo
+(3 rows)
+
+       sensor        |  nombre_zona  | nombre_categoria | organismo 
+---------------------+---------------+------------------+-----------
+ CDMX_10648_11825486 | Atizap├ín      | ambiente         | MINAE
+ CDMX_10648_35432    | Atizap├ín      | ambiente         | MINAE
+ CDMX_10648_35433    | Atizap├ín      | ambiente         | MINAE
+ CDMX_10648_35435    | Atizap├ín      | ambiente         | MINAE
+ CDMX_759_2347       | Atizap├ín      | ambiente         | MINAE
+ CDMX_759_2348       | Atizap├ín      | ambiente         | MINAE
+ CDMX_759_2349       | Atizap├ín      | ambiente         | MINAE
+ CDMX_759_2350       | Atizap├ín      | ambiente         | MINAE
+ CDMX_10860_36363    | Benito Ju├írez | ambiente         | MINAE
+ CDMX_10860_36364    | Benito Ju├írez | ambiente         | MINAE
+ CDMX_10860_36365    | Benito Ju├írez | ambiente         | MINAE
+ CDMX_10860_36366    | Benito Ju├írez | ambiente         | MINAE
+ CDMX_10860_36367    | Benito Ju├írez | ambiente         | MINAE
+ CDMX_10722_35722    | Camarones     | ambiente         | MINAE
+ CDMX_10722_35724    | Camarones     | ambiente         | MINAE
+ CDMX_10722_35725    | Camarones     | ambiente         | MINAE
+ CDMX_10722_36055    | Camarones     | ambiente         | MINAE
+ CDMX_10722_36072    | Camarones     | ambiente         | MINAE
+ CDMX_1739_3063      | Camarones     | ambiente         | MINAE
+ CDMX_1739_3064      | Camarones     | ambiente         | MINAE
+(20 rows)
+
+ nombre_zona 
+-------------
+(0 rows)
+
+    nombre_zona     | mediciones | total_vehiculos | temp_prom | temp_min | temp_max 
+--------------------+------------+-----------------+-----------+----------+----------
+ Financial District |      48960 |        43848854 |      15.0 |     -2.7 |     31.7
+ Downtown Core      |      44880 |        37612862 |      15.0 |     -2.8 |     33.1
+ Suburban North     |      53040 |        33024532 |      15.0 |     -1.5 |     31.7
+ Tech Park          |      22440 |        15764104 |      15.0 |     -1.3 |     31.3
+ Residential West   |      18360 |        11824827 |      15.0 |     -1.9 |     32.4
+ Industrial East    |      16320 |        10840346 |      15.0 |     -1.4 |     31.3
+(6 rows)
+
+        nombre         | tipo_sensor  
+-----------------------+--------------
+ CDMX_10699_35646      | calidad_aire
+ CDMX_10722_36055      | calidad_aire
+ CDMX_10748_35849      | calidad_aire
+ CDMX_10802_36082      | calidad_aire
+ CDMX_10804_36102      | calidad_aire
+ CDMX_1134_2034        | calidad_aire
+ CDMX_1285351_6566242  | calidad_aire
+ CDMX_1367_2448        | calidad_aire
+ CDMX_1640325_7074776  | calidad_aire
+ CDMX_1659_2936        | calidad_aire
+ CDMX_1739_3069        | calidad_aire
+ CDMX_1791_3165        | calidad_aire
+ CDMX_2054_3658        | calidad_aire
+ CDMX_2453311_7897346  | calidad_aire
+ CDMX_576_1013         | calidad_aire
+ CDMX_6135780_14673703 | calidad_aire
+ CDMX_7998_35141       | calidad_aire
+ CDMX_8000_40702       | calidad_aire
+ CDMX_926_2821         | calidad_aire
+ CDMX_9759_30458       | calidad_aire
+(20 rows)
+
+               nombre_zona                | promedio_pm25 
+------------------------------------------+---------------
+ Mexico City                              |         32.47
+ National Autonomous University of Mexico |         30.01
+ Rincon del Bosque, CDMX                  |         28.35
+ Merced                                   |         25.45
+ Santiago Acahualtepec                    |         25.10
+ Xalostoc                                 |         24.44
+ Tlalnepantla                             |         23.33
+ Camarones                                |         23.20
+ UAM Iztapalapa                           |         22.83
+ Hospital General de M├®xico               |         22.64
+ Santiago Acahualtepe                     |         21.95
+(11 rows)
+
+  nombre_zona  |    dia     | pm25_dia | promedio_movil_7d 
+---------------+------------+----------+-------------------
+ Benito Ju├írez | 2021-01-01 |    28.92 |             28.92
+ Benito Ju├írez | 2021-01-02 |     7.00 |             17.96
+ Benito Ju├írez | 2021-01-03 |    18.43 |             18.12
+ Benito Ju├írez | 2021-01-04 |    20.21 |             18.64
+ Benito Ju├írez | 2021-01-05 |    21.08 |             19.13
+ Benito Ju├írez | 2021-01-06 |    18.75 |             19.07
+ Benito Ju├írez | 2021-01-07 |    16.54 |             18.70
+ Benito Ju├írez | 2021-01-08 |    20.78 |             17.54
+ Benito Ju├írez | 2021-01-09 |    20.54 |             19.48
+ Benito Ju├írez | 2021-01-10 |    11.09 |             18.43
+ Benito Ju├írez | 2021-01-11 |    12.95 |             17.39
+ Benito Ju├írez | 2021-01-12 |    11.00 |             15.95
+ Benito Ju├írez | 2021-01-13 |    15.17 |             15.44
+ Benito Ju├írez | 2021-01-14 |    18.25 |             15.68
+ Benito Ju├írez | 2021-01-15 |    19.38 |             15.48
+ Benito Ju├írez | 2021-01-16 |    22.70 |             15.79
+ Benito Ju├írez | 2021-01-17 |    12.13 |             15.94
+ Benito Ju├írez | 2021-01-18 |    15.65 |             16.32
+ Benito Ju├írez | 2021-01-19 |    20.96 |             17.75
+ Benito Ju├írez | 2021-01-20 |    23.38 |             18.92
+ Benito Ju├írez | 2021-01-21 |    13.75 |             18.28
+ Benito Ju├írez | 2021-01-22 |    17.88 |             18.06
+ Benito Ju├írez | 2021-01-23 |    20.29 |             17.72
+ Benito Ju├írez | 2021-01-24 |    21.21 |             19.02
+ Benito Ju├írez | 2021-01-25 |    18.63 |             19.44
+ Benito Ju├írez | 2021-01-26 |    15.17 |             18.61
+ Benito Ju├írez | 2021-01-27 |    21.88 |             18.40
+ Benito Ju├írez | 2021-01-28 |     9.50 |             17.79
+ Benito Ju├írez | 2021-01-29 |    19.00 |             17.95
+ Benito Ju├írez | 2021-01-30 |    18.50 |             17.70
+ Benito Ju├írez | 2021-01-31 |    22.17 |             17.83
+ Benito Ju├írez | 2021-02-01 |     5.00 |             15.89
+ Benito Ju├írez | 2021-02-02 |    24.91 |             17.28
+ Benito Ju├írez | 2021-02-03 |    18.21 |             16.76
+ Benito Ju├írez | 2021-02-04 |    21.00 |             18.40
+ Benito Ju├írez | 2021-02-05 |    26.79 |             19.51
+ Benito Ju├írez | 2021-02-06 |    18.22 |             19.47
+ Benito Ju├írez | 2021-02-07 |    22.74 |             19.55
+ Benito Ju├írez | 2021-02-08 |    13.96 |             20.83
+ Benito Ju├írez | 2021-02-09 |    20.04 |             20.14
+ Benito Ju├írez | 2021-02-10 |    18.79 |             20.22
+ Benito Ju├írez | 2021-02-11 |    16.57 |             19.59
+ Benito Ju├írez | 2021-02-12 |     9.65 |             17.14
+ Benito Ju├írez | 2021-02-13 |     5.75 |             15.36
+ Benito Ju├írez | 2021-02-14 |    11.00 |             13.68
+ Benito Ju├írez | 2021-02-15 |     7.00 |             12.69
+ Benito Ju├írez | 2021-02-16 |     8.52 |             11.04
+ Benito Ju├írez | 2021-02-17 |    12.54 |             10.15
+ Benito Ju├írez | 2021-02-18 |    13.75 |              9.75
+ Benito Ju├írez | 2021-02-19 |    35.75 |             13.47
+ Benito Ju├írez | 2021-02-20 |    23.73 |             16.04
+ Benito Ju├írez | 2021-02-21 |    20.92 |             17.46
+ Benito Ju├írez | 2021-02-22 |    30.96 |             20.88
+ Benito Ju├írez | 2021-02-23 |    23.46 |             23.01
+ Benito Ju├írez | 2021-02-24 |    20.33 |             24.13
+ Benito Ju├írez | 2021-02-25 |    15.46 |             24.37
+ Benito Ju├írez | 2021-02-26 |    29.79 |             23.52
+ Benito Ju├írez | 2021-02-27 |    30.25 |             24.45
+ Benito Ju├írez | 2021-02-28 |    27.50 |             25.39
+ Benito Ju├írez | 2021-03-01 |    26.13 |             24.70
+(60 rows)
+
+            nombre_zona             |    mes     | pm25_mes | cambio_vs_mes_anterior 
+------------------------------------+------------+----------+------------------------
+ Benito Ju├írez                      | 2021-01-01 |    18.33 |                       
+ Benito Ju├írez                      | 2021-02-01 |    19.61 |                   1.28
+ Benito Ju├írez                      | 2021-03-01 |    22.96 |                   3.35
+ Benito Ju├írez                      | 2021-04-01 |    18.77 |                  -4.19
+ Benito Ju├írez                      | 2021-09-01 |    12.77 |                       
+ Camarones                          | 2021-01-01 |    23.94 |                       
+ Camarones                          | 2021-02-01 |    24.51 |                   0.57
+ Camarones                          | 2021-03-01 |    27.27 |                   2.75
+ Camarones                          | 2021-04-01 |    24.55 |                  -2.72
+ Camarones                          | 2021-09-01 |    14.75 |                       
+ Centro de Ciencias de la Atm├│sfera | 2021-01-01 |    15.83 |                       
+ Centro de Ciencias de la Atm├│sfera | 2021-02-01 |    20.54 |                   4.71
+ Centro de Ciencias de la Atm├│sfera | 2021-03-01 |    25.40 |                   4.86
+ Centro de Ciencias de la Atm├│sfera | 2021-04-01 |    21.67 |                  -3.72
+ Centro de Ciencias de la Atm├│sfera | 2021-09-01 |    10.88 |                       
+ FES Arag├│n                         | 2021-01-01 |    20.86 |                       
+ FES Arag├│n                         | 2021-02-01 |    24.51 |                   3.65
+ FES Arag├│n                         | 2021-03-01 |    26.77 |                   2.25
+ FES Arag├│n                         | 2021-04-01 |    22.37 |                  -4.40
+ FES Arag├│n                         | 2021-09-01 |    11.66 |                       
+ Merced                             | 2021-01-01 |    24.50 |                       
+ Merced                             | 2021-02-01 |    27.50 |                   3.00
+ Merced                             | 2021-03-01 |    28.97 |                   1.47
+ Merced                             | 2021-04-01 |    23.82 |                  -5.15
+ Merced                             | 2021-09-01 |    15.54 |                       
+ Nezahualc├│yotl                     | 2021-01-01 |    22.26 |                       
+ Nezahualc├│yotl                     | 2021-02-01 |    27.09 |                   4.83
+ Nezahualc├│yotl                     | 2021-03-01 |    29.06 |                   1.97
+ Nezahualc├│yotl                     | 2021-04-01 |    26.21 |                  -2.85
+ Nezahualc├│yotl                     | 2021-09-01 |     8.75 |                       
+ Pedregal                           | 2021-01-01 |    15.03 |                       
+ Pedregal                           | 2021-02-01 |    17.24 |                   2.21
+ Pedregal                           | 2021-03-01 |    22.09 |                   4.85
+ Pedregal                           | 2021-04-01 |    18.50 |                  -3.59
+ Pedregal                           | 2021-09-01 |    10.99 |                       
+ San Agust├¡n                        | 2021-01-01 |    24.18 |                       
+ San Agust├¡n                        | 2021-02-01 |    22.65 |                  -1.53
+ San Agust├¡n                        | 2021-03-01 |    28.18 |                   5.53
+ San Agust├¡n                        | 2021-04-01 |    17.89 |                 -10.29
+ San Agust├¡n                        | 2021-09-01 |    13.00 |                       
+ Santa Fe                           | 2021-01-01 |    14.18 |                       
+ Santa Fe                           | 2021-02-01 |    15.46 |                   1.28
+ Santa Fe                           | 2021-03-01 |    20.00 |                   4.54
+ Santa Fe                           | 2021-09-01 |    11.42 |                       
+ Santiago Acahualtepec              | 2021-01-01 |    25.05 |                       
+ Santiago Acahualtepec              | 2021-02-01 |    26.21 |                   1.17
+ Santiago Acahualtepec              | 2021-03-01 |    36.84 |                  10.63
+ Santiago Acahualtepec              | 2021-04-01 |    32.04 |                  -4.80
+ Santiago Acahualtepec              | 2021-09-01 |    15.05 |                       
+ SPARTAN - Mexico City              | 2021-02-01 |    23.52 |                       
+ SPARTAN - Mexico City              | 2021-03-01 |    21.33 |                  -2.19
+ SPARTAN - Mexico City              | 2021-04-01 |    20.81 |                  -0.52
+ SPARTAN - Mexico City              | 2021-05-01 |    18.03 |                  -2.79
+ SPARTAN - Mexico City              | 2021-06-01 |    10.54 |                  -7.48
+ SPARTAN - Mexico City              | 2021-07-01 |    11.92 |                   1.38
+ SPARTAN - Mexico City              | 2021-08-01 |     9.40 |                  -2.53
+ SPARTAN - Mexico City              | 2021-09-01 |     8.02 |                  -1.38
+ SPARTAN - Mexico City              | 2021-10-01 |     8.71 |                   0.69
+ Tlalnepantla                       | 2021-01-01 |    20.86 |                       
+ Tlalnepantla                       | 2021-02-01 |    21.62 |                   0.77
+(60 rows)
+
+ distrito |               nombre_zona                | pm25_prom | rank_en_distrito 
+----------+------------------------------------------+-----------+------------------
+ CDMX     | Mexico City                              |     32.47 |                1
+ CDMX     | National Autonomous University of Mexico |     30.01 |                2
+ CDMX     | Rincon del Bosque, CDMX                  |     28.35 |                3
+ CDMX     | Merced                                   |     25.45 |                4
+ CDMX     | Santiago Acahualtepec                    |     25.10 |                5
+ CDMX     | Xalostoc                                 |     24.44 |                6
+ CDMX     | Tlalnepantla                             |     23.33 |                7
+ CDMX     | Camarones                                |     23.20 |                8
+ CDMX     | UAM Iztapalapa                           |     22.83 |                9
+ CDMX     | Hospital General de M├®xico               |     22.64 |               10
+ CDMX     | Santiago Acahualtepe                     |     21.95 |               11
+ CDMX     | San Agust├¡n                              |     21.69 |               12
+ CDMX     | Gustavo A. Madero                        |     21.42 |               13
+ CDMX     | FES Arag├│n                               |     21.41 |               14
+ CDMX     | Nezahualc├│yotl                           |     21.18 |               15
+ CDMX     | UAM Xochimilco                           |     20.57 |               16
+ CDMX     | Benito Ju├írez                            |     19.55 |               17
+ CDMX     | Centro de Ciencias de la Atm├│sfera       |     18.96 |               18
+ CDMX     | Pedregal                                 |     17.86 |               19
+ CDMX     | SPARTAN - Mexico City                    |     16.17 |               20
+ CDMX     | Santa Fe                                 |     15.99 |               21
+ CDMX     | FES Aragon                               |     13.50 |               22
+ CDMX     | Miguel Hidalgo                           |     11.00 |               23
+(23 rows)
+
+    mes     | mediciones 
+------------+------------
+ 2024-01-01 |        645
+ 2024-02-01 |        661
+ 2024-03-01 |       2021
+ 2024-04-01 |       2258
+ 2024-05-01 |       2226
+ 2024-06-01 |       2194
+ 2024-07-01 |       1995
+ 2024-08-01 |       1452
+ 2024-09-01 |         54
+ 2024-10-01 |       1414
+ 2024-11-01 |       2974
+ 2024-12-01 |       2124
+(12 rows)
+
+ anio | mediciones 
+------+------------
+ 2016 |     387578
+ 2017 |       6401
+ 2018 |      10051
+ 2019 |       9482
+ 2020 |     122869
+ 2021 |     180774
+ 2022 |       2142
+ 2023 |      86397
+ 2024 |      20018
+ 2025 |      28215
+ 2026 |     208931
+(11 rows)
+
+        fecha        | pm25 | pm10 
+---------------------+------+------
+ 2021-01-01 00:00:00 |    8 |     
+ 2021-01-01 01:00:00 |   10 |     
+ 2021-01-01 02:00:00 |   10 |     
+ 2021-01-01 03:00:00 |   15 |     
+ 2021-01-01 04:00:00 |   12 |     
+ 2021-01-01 05:00:00 |   14 |     
+ 2021-01-01 06:00:00 |   14 |     
+ 2021-01-01 08:00:00 |   33 |     
+ 2021-01-01 09:00:00 |   33 |     
+ 2021-01-01 10:00:00 |   45 |     
+ 2021-01-01 11:00:00 |   46 |     
+ 2021-01-01 12:00:00 |   51 |     
+ 2021-01-01 14:00:00 |   42 |     
+ 2021-01-01 15:00:00 |   42 |     
+ 2021-01-01 16:00:00 |   32 |     
+ 2021-01-01 17:00:00 |   30 |     
+ 2021-01-01 18:00:00 |   17 |     
+ 2021-01-01 19:00:00 |   17 |     
+ 2021-01-01 20:00:00 |   20 |     
+ 2021-01-01 21:00:00 |   12 |     
+ 2021-01-01 22:00:00 |    5 |     
+ 2021-01-01 23:00:00 |    4 |     
+ 2021-01-02 00:00:00 |    9 |     
+ 2021-01-03 01:00:00 |   14 |     
+ 2021-01-03 02:00:00 |   24 |     
+ 2021-01-03 03:00:00 |   22 |     
+ 2021-01-03 05:00:00 |   27 |     
+ 2021-01-03 06:00:00 |   27 |     
+ 2021-01-03 08:00:00 |   31 |     
+ 2021-01-03 09:00:00 |   28 |     
+ 2021-01-03 10:00:00 |   23 |     
+ 2021-01-03 11:00:00 |   21 |     
+ 2021-01-03 12:00:00 |   14 |     
+ 2021-01-03 13:00:00 |   14 |     
+ 2021-01-03 14:00:00 |   10 |     
+ 2021-01-03 15:00:00 |   12 |     
+ 2021-01-03 16:00:00 |    4 |     
+ 2021-01-03 17:00:00 |    9 |     
+ 2021-01-03 18:00:00 |   12 |     
+ 2021-01-03 19:00:00 |   14 |     
+ 2021-01-03 20:00:00 |    7 |     
+ 2021-01-03 21:00:00 |    6 |     
+ 2021-01-03 22:00:00 |    7 |     
+ 2021-01-03 23:00:00 |    5 |     
+ 2021-01-04 00:00:00 |    6 |     
+ 2021-01-04 01:00:00 |   13 |     
+ 2021-01-04 02:00:00 |   20 |     
+ 2021-01-04 03:00:00 |   20 |     
+ 2021-01-04 04:00:00 |   11 |     
+ 2021-01-04 05:00:00 |   14 |     
+(50 rows)
+
+    nombre_zona     | total_vehiculos 
+--------------------+-----------------
+ Financial District |        43848854
+ Downtown Core      |        37612862
+ Suburban North     |        33024532
+ Tech Park          |        15764104
+ Residential West   |        11824827
+(5 rows)
+
+    nombre_zona     | temperatura_prom 
+--------------------+------------------
+ Industrial East    |            15.02
+ Downtown Core      |            15.00
+ Financial District |            15.00
+ Suburban North     |            15.00
+ Tech Park          |            15.00
+ Residential West   |            14.97
+(6 rows)
+
+ hora | congestion_prom | carros_prom 
+------+-----------------+-------------
+   12 |           99.80 |      1761.1
+   13 |           99.48 |      1705.3
+   11 |           99.47 |      1705.3
+   14 |           98.13 |      1534.7
+   10 |           98.12 |      1531.3
+(5 rows)
+
+               nombre_zona                | pm25_prom | lecturas 
+------------------------------------------+-----------+----------
+ Mexico City                              |     32.47 |     5000
+ National Autonomous University of Mexico |     30.01 |     5000
+ Rincon del Bosque, CDMX                  |     28.35 |     5000
+ Merced                                   |     25.45 |     9999
+ Santiago Acahualtepec                    |     25.10 |     5000
+(5 rows)
+
+     nombre      | tipo_sensor  |        nombre_zona         |       ultima        | dias_sin_datos 
+-----------------+--------------+----------------------------+---------------------+----------------
+ S-TEST-INACTIVO | test         | Financial District         |                     |               
+ CDMX_1986_3515  | calidad_aire | Santiago Acahualtepe       | 2016-11-13 06:00:00 |           3507
+ CDMX_759_2350   | calidad_aire | Atizap├ín                   | 2016-11-13 11:00:00 |           3507
+ CDMX_1367_2449  | calidad_aire | Xalostoc                   | 2016-11-13 20:00:00 |           3507
+ CDMX_2054_3655  | calidad_aire | Nezahualc├│yotl             | 2016-11-14 12:00:00 |           3506
+ CDMX_1367_2448  | calidad_aire | Xalostoc                   | 2016-11-14 17:00:00 |           3506
+ CDMX_1134_2045  | calidad_aire | Hospital General de M├®xico | 2016-11-15 20:00:00 |           3505
+ CDMX_1367_2452  | calidad_aire | Xalostoc                   | 2016-11-15 21:00:00 |           3505
+ CDMX_926_2825   | calidad_aire | UAM Xochimilco             | 2016-11-16 07:00:00 |           3504
+ CDMX_926_2824   | calidad_aire | UAM Xochimilco             | 2016-11-17 14:00:00 |           3503
+ CDMX_759_2349   | calidad_aire | Atizap├ín                   | 2016-11-17 18:00:00 |           3503
+ CDMX_1986_3513  | calidad_aire | Santiago Acahualtepe       | 2016-11-20 14:00:00 |           3500
+ CDMX_759_2347   | calidad_aire | Atizap├ín                   | 2016-11-21 09:00:00 |           3499
+ CDMX_1090_1950  | calidad_aire | Iztacalco                  | 2016-11-21 14:00:00 |           3499
+ CDMX_2054_3654  | calidad_aire | Nezahualc├│yotl             | 2016-11-21 15:00:00 |           3499
+ CDMX_1090_1952  | calidad_aire | Iztacalco                  | 2016-11-22 04:00:00 |           3498
+ CDMX_1604_2829  | calidad_aire | UAM Iztapalapa             | 2016-11-22 09:00:00 |           3498
+ CDMX_1134_2051  | calidad_aire | Hospital General de M├®xico | 2016-11-22 21:00:00 |           3498
+ CDMX_576_1853   | calidad_aire | Pedregal                   | 2016-11-23 09:00:00 |           3497
+ CDMX_2054_3658  | calidad_aire | Nezahualc├│yotl             | 2016-11-23 16:00:00 |           3497
+ CDMX_576_1852   | calidad_aire | Pedregal                   | 2016-11-23 22:00:00 |           3497
+ CDMX_576_1854   | calidad_aire | Pedregal                   | 2016-11-25 09:00:00 |           3495
+ CDMX_1367_2453  | calidad_aire | Xalostoc                   | 2016-11-25 19:00:00 |           3495
+ CDMX_1090_1948  | calidad_aire | Iztacalco                  | 2016-11-25 22:00:00 |           3495
+ CDMX_677_2944   | calidad_aire | Tlahuac                    | 2016-11-26 20:00:00 |           3494
+ CDMX_1604_2830  | calidad_aire | UAM Iztapalapa             | 2016-11-26 20:00:00 |           3494
+ CDMX_1578_2777  | calidad_aire | Los Laureles               | 2016-11-27 00:00:00 |           3493
+ CDMX_1791_3161  | calidad_aire | Merced                     | 2016-11-27 05:00:00 |           3493
+ CDMX_1991_3529  | calidad_aire | Cuajimalpa                 | 2016-11-27 12:00:00 |           3493
+ CDMX_1791_3158  | calidad_aire | Merced                     | 2016-11-27 16:00:00 |           3493
+(30 rows)
+
+>>> 05_consultas_avanzadas.sql : SIN ERRORES
+
+=================== 06_rendimiento.sql  (base: smartcity_test) ===================
+ANALYZE
+SET
+SET
+SET
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=18233.35..18233.36 rows=1 width=8) (actual time=16.381..18.041 rows=1 loops=1)
+   Buffers: shared hit=10232
+   ->  Gather  (cost=18233.13..18233.34 rows=2 width=8) (actual time=16.297..18.037 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=10232
+         ->  Partial Aggregate  (cost=17233.13..17233.14 rows=1 width=8) (actual time=14.315..14.318 rows=1 loops=3)
+               Buffers: shared hit=10232
+               ->  Parallel Append  (cost=0.00..17227.40 rows=2294 width=0) (actual time=0.307..14.234 rows=1808 loops=3)
+                     Buffers: shared hit=10232
+                     ->  Parallel Seq Scan on medicion_2016 medicion_1  (cost=0.00..5290.64 rows=1003 width=0) (actual time=0.922..5.184 rows=777 loops=3)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 128416
+                           Buffers: shared hit=3272
+                     ->  Parallel Seq Scan on medicion_2026 medicion_11  (cost=0.00..4320.26 rows=199 width=0) (actual time=0.031..9.087 rows=326 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 208605
+                           Buffers: shared hit=2784
+                     ->  Parallel Seq Scan on medicion_2021 medicion_6  (cost=0.00..2873.22 rows=438 width=0) (actual time=0.112..3.518 rows=380 loops=2)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 90006
+                           Buffers: shared hit=1544
+                     ->  Parallel Seq Scan on medicion_2020 medicion_5  (cost=0.00..1935.45 rows=265 width=0) (actual time=0.182..4.269 rows=457 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 122412
+                           Buffers: shared hit=1032
+                     ->  Parallel Seq Scan on medicion_2023 medicion_8  (cost=0.00..1411.27 rows=244 width=0) (actual time=0.023..3.285 rows=407 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 85990
+                           Buffers: shared hit=776
+                     ->  Parallel Seq Scan on medicion_2025 medicion_10  (cost=0.00..471.46 rows=174 width=0) (actual time=0.175..1.100 rows=300 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 27915
+                           Buffers: shared hit=264
+                     ->  Parallel Seq Scan on medicion_2024 medicion_9  (cost=0.00..347.19 rows=411 width=0) (actual time=0.033..0.829 rows=691 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 19327
+                           Buffers: shared hit=200
+                     ->  Parallel Seq Scan on medicion_2018 medicion_3  (cost=0.00..201.90 rows=45 width=0) (actual time=0.203..0.423 rows=78 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 9973
+                           Buffers: shared hit=128
+                     ->  Parallel Seq Scan on medicion_2019 medicion_4  (cost=0.00..197.72 rows=34 width=0) (actual time=0.309..0.482 rows=59 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 9423
+                           Buffers: shared hit=128
+                     ->  Parallel Seq Scan on medicion_2017 medicion_2  (cost=0.00..119.07 rows=5 width=0) (actual time=0.156..0.223 rows=9 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 6392
+                           Buffers: shared hit=72
+                     ->  Parallel Seq Scan on medicion_2022 medicion_7  (cost=0.00..47.75 rows=5 width=0) (actual time=0.015..0.087 rows=5 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+                           Rows Removed by Filter: 2137
+                           Buffers: shared hit=32
+                     ->  Parallel Seq Scan on medicion_default medicion_12  (cost=0.00..0.00 rows=1 width=0) (actual time=0.001..0.001 rows=0 loops=1)
+                           Filter: (pm25 > '50'::double precision)
+ Planning:
+   Buffers: shared hit=202 read=2
+ Planning Time: 0.719 ms
+ Execution Time: 18.066 ms
+(60 rows)
+
+RESET
+RESET
+RESET
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=7874.30..7874.31 rows=1 width=8) (actual time=1.909..1.914 rows=1 loops=1)
+   Buffers: shared hit=1098 read=3
+   ->  Append  (cost=47.08..7860.55 rows=5502 width=0) (actual time=0.124..1.703 rows=5424 loops=1)
+         Buffers: shared hit=1098 read=3
+         ->  Bitmap Heap Scan on medicion_2016 medicion_1  (cost=47.08..3244.73 rows=2407 width=0) (actual time=0.124..0.557 rows=2331 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=295
+               Buffers: shared hit=304
+               ->  Bitmap Index Scan on medicion_2016_pm25_idx  (cost=0.00..46.47 rows=2407 width=0) (actual time=0.087..0.087 rows=2331 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=9
+         ->  Bitmap Heap Scan on medicion_2017 medicion_2  (cost=4.35..30.92 rows=9 width=0) (actual time=0.005..0.006 rows=9 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=1
+               Buffers: shared hit=3
+               ->  Bitmap Index Scan on medicion_2017_pm25_idx  (cost=0.00..4.35 rows=9 width=0) (actual time=0.004..0.004 rows=9 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2018 medicion_3  (cost=4.88..122.61 rows=77 width=0) (actual time=0.012..0.030 rows=78 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=20
+               Buffers: shared hit=22
+               ->  Bitmap Index Scan on medicion_2018_pm25_idx  (cost=0.00..4.86 rows=77 width=0) (actual time=0.004..0.004 rows=78 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2019 medicion_4  (cost=4.73..109.28 rows=58 width=0) (actual time=0.012..0.017 rows=59 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=5
+               Buffers: shared hit=7
+               ->  Bitmap Index Scan on medicion_2019_pm25_idx  (cost=0.00..4.72 rows=58 width=0) (actual time=0.010..0.010 rows=59 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2020 medicion_5  (cost=11.91..832.89 rows=450 width=0) (actual time=0.026..0.110 rows=457 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=93
+               Buffers: shared hit=98
+               ->  Bitmap Index Scan on medicion_2020_pm25_idx  (cost=0.00..11.79 rows=450 width=0) (actual time=0.019..0.019 rows=457 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=5
+         ->  Bitmap Heap Scan on medicion_2021 medicion_6  (cost=18.19..1306.62 rows=745 width=0) (actual time=0.061..0.228 rows=761 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=162
+               Buffers: shared hit=167
+               ->  Bitmap Index Scan on medicion_2021_pm25_idx  (cost=0.00..18.01 rows=745 width=0) (actual time=0.048..0.048 rows=761 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=5
+         ->  Bitmap Heap Scan on medicion_2022 medicion_7  (cost=4.34..24.44 rows=8 width=0) (actual time=0.014..0.015 rows=5 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=2
+               Buffers: shared hit=4
+               ->  Bitmap Index Scan on medicion_2022_pm25_idx  (cost=0.00..4.34 rows=8 width=0) (actual time=0.012..0.012 rows=5 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2023 medicion_8  (cost=11.63..689.08 rows=415 width=0) (actual time=0.024..0.096 rows=407 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=83
+               Buffers: shared hit=87
+               ->  Bitmap Index Scan on medicion_2023_pm25_idx  (cost=0.00..11.53 rows=415 width=0) (actual time=0.016..0.016 rows=407 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=4
+         ->  Bitmap Heap Scan on medicion_2024 medicion_9  (cost=13.70..222.42 rows=698 width=0) (actual time=0.056..0.130 rows=691 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=56
+               Buffers: shared hit=58 read=2
+               ->  Bitmap Index Scan on medicion_2024_pm25_idx  (cost=0.00..13.52 rows=698 width=0) (actual time=0.050..0.050 rows=691 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2 read=2
+         ->  Bitmap Heap Scan on medicion_2025 medicion_10  (cost=6.58..286.72 rows=296 width=0) (actual time=0.022..0.060 rows=300 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=42
+               Buffers: shared hit=44 read=1
+               ->  Bitmap Index Scan on medicion_2025_pm25_idx  (cost=0.00..6.51 rows=296 width=0) (actual time=0.018..0.018 rows=300 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2 read=1
+         ->  Bitmap Heap Scan on medicion_2026 medicion_11  (cost=7.04..963.32 rows=338 width=0) (actual time=0.047..0.168 rows=326 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Heap Blocks: exact=301
+               Buffers: shared hit=304
+               ->  Bitmap Index Scan on medicion_2026_pm25_idx  (cost=0.00..6.96 rows=338 width=0) (actual time=0.026..0.026 rows=326 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=3
+         ->  Seq Scan on medicion_default medicion_12  (cost=0.00..0.00 rows=1 width=0) (actual time=0.002..0.002 rows=0 loops=1)
+               Filter: (pm25 > '50'::double precision)
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.345 ms
+ Execution Time: 1.974 ms
+(87 rows)
+
+                                                                         QUERY PLAN                                                                         
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=226.08..226.09 rows=1 width=8) (actual time=0.123..0.124 rows=1 loops=1)
+   Buffers: shared hit=9 read=1
+   ->  Bitmap Heap Scan on medicion_2024 medicion  (cost=14.86..224.47 rows=641 width=0) (actual time=0.028..0.085 rows=645 loops=1)
+         Recheck Cond: ((fecha >= '2024-01-01 00:00:00'::timestamp without time zone) AND (fecha < '2024-02-01 00:00:00'::timestamp without time zone))
+         Heap Blocks: exact=7
+         Buffers: shared hit=9 read=1
+         ->  Bitmap Index Scan on medicion_2024_fecha_idx  (cost=0.00..14.70 rows=641 width=0) (actual time=0.024..0.024 rows=645 loops=1)
+               Index Cond: ((fecha >= '2024-01-01 00:00:00'::timestamp without time zone) AND (fecha < '2024-02-01 00:00:00'::timestamp without time zone))
+               Buffers: shared hit=2 read=1
+ Planning:
+   Buffers: shared hit=37
+ Planning Time: 0.156 ms
+ Execution Time: 0.133 ms
+(13 rows)
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=7874.30..7874.31 rows=1 width=8) (actual time=1.963..1.966 rows=1 loops=1)
+   Buffers: shared hit=1101
+   ->  Append  (cost=47.08..7860.55 rows=5502 width=0) (actual time=0.150..1.741 rows=5424 loops=1)
+         Buffers: shared hit=1101
+         ->  Bitmap Heap Scan on medicion_2016 medicion_1  (cost=47.08..3244.73 rows=2407 width=0) (actual time=0.150..0.589 rows=2331 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=295
+               Buffers: shared hit=304
+               ->  Bitmap Index Scan on medicion_2016_pm25_idx  (cost=0.00..46.47 rows=2407 width=0) (actual time=0.120..0.120 rows=2331 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=9
+         ->  Bitmap Heap Scan on medicion_2017 medicion_2  (cost=4.35..30.92 rows=9 width=0) (actual time=0.004..0.005 rows=9 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=1
+               Buffers: shared hit=3
+               ->  Bitmap Index Scan on medicion_2017_pm25_idx  (cost=0.00..4.35 rows=9 width=0) (actual time=0.003..0.003 rows=9 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2018 medicion_3  (cost=4.88..122.61 rows=77 width=0) (actual time=0.007..0.029 rows=78 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=20
+               Buffers: shared hit=22
+               ->  Bitmap Index Scan on medicion_2018_pm25_idx  (cost=0.00..4.86 rows=77 width=0) (actual time=0.004..0.004 rows=78 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2019 medicion_4  (cost=4.73..109.28 rows=58 width=0) (actual time=0.006..0.015 rows=59 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=5
+               Buffers: shared hit=7
+               ->  Bitmap Index Scan on medicion_2019_pm25_idx  (cost=0.00..4.72 rows=58 width=0) (actual time=0.003..0.003 rows=59 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2020 medicion_5  (cost=11.91..832.89 rows=450 width=0) (actual time=0.025..0.136 rows=457 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=93
+               Buffers: shared hit=98
+               ->  Bitmap Index Scan on medicion_2020_pm25_idx  (cost=0.00..11.79 rows=450 width=0) (actual time=0.016..0.016 rows=457 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=5
+         ->  Bitmap Heap Scan on medicion_2021 medicion_6  (cost=18.19..1306.62 rows=745 width=0) (actual time=0.056..0.232 rows=761 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=162
+               Buffers: shared hit=167
+               ->  Bitmap Index Scan on medicion_2021_pm25_idx  (cost=0.00..18.01 rows=745 width=0) (actual time=0.025..0.025 rows=761 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=5
+         ->  Bitmap Heap Scan on medicion_2022 medicion_7  (cost=4.34..24.44 rows=8 width=0) (actual time=0.004..0.005 rows=5 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=2
+               Buffers: shared hit=4
+               ->  Bitmap Index Scan on medicion_2022_pm25_idx  (cost=0.00..4.34 rows=8 width=0) (actual time=0.002..0.002 rows=5 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=2
+         ->  Bitmap Heap Scan on medicion_2023 medicion_8  (cost=11.63..689.08 rows=415 width=0) (actual time=0.018..0.100 rows=407 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=83
+               Buffers: shared hit=87
+               ->  Bitmap Index Scan on medicion_2023_pm25_idx  (cost=0.00..11.53 rows=415 width=0) (actual time=0.012..0.012 rows=407 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=4
+         ->  Bitmap Heap Scan on medicion_2024 medicion_9  (cost=13.70..222.42 rows=698 width=0) (actual time=0.027..0.120 rows=691 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=56
+               Buffers: shared hit=60
+               ->  Bitmap Index Scan on medicion_2024_pm25_idx  (cost=0.00..13.52 rows=698 width=0) (actual time=0.022..0.022 rows=691 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=4
+         ->  Bitmap Heap Scan on medicion_2025 medicion_10  (cost=6.58..286.72 rows=296 width=0) (actual time=0.012..0.058 rows=300 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=42
+               Buffers: shared hit=45
+               ->  Bitmap Index Scan on medicion_2025_pm25_idx  (cost=0.00..6.51 rows=296 width=0) (actual time=0.008..0.008 rows=300 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=3
+         ->  Bitmap Heap Scan on medicion_2026 medicion_11  (cost=7.04..963.32 rows=338 width=0) (actual time=0.042..0.170 rows=326 loops=1)
+               Recheck Cond: (pm25 > '50'::double precision)
+               Filter: (fecha IS NOT NULL)
+               Heap Blocks: exact=301
+               Buffers: shared hit=304
+               ->  Bitmap Index Scan on medicion_2026_pm25_idx  (cost=0.00..6.96 rows=338 width=0) (actual time=0.015..0.015 rows=326 loops=1)
+                     Index Cond: (pm25 > '50'::double precision)
+                     Buffers: shared hit=3
+         ->  Seq Scan on medicion_default medicion_12  (cost=0.00..0.00 rows=1 width=0) (actual time=0.002..0.002 rows=0 loops=1)
+               Filter: ((fecha IS NOT NULL) AND (pm25 > '50'::double precision))
+ Planning:
+   Buffers: shared hit=105
+ Planning Time: 0.441 ms
+ Execution Time: 2.003 ms
+(98 rows)
+
+                                                                         QUERY PLAN                                                                          
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=124.40..125.95 rows=619 width=16) (actual time=0.399..0.480 rows=666 loops=1)
+   Sort Key: medicion.fecha
+   Sort Method: quicksort  Memory: 51kB
+   Buffers: shared hit=28
+   InitPlan 1 (returns $1)
+     ->  Aggregate  (cost=6.57..6.58 rows=1 width=4) (actual time=0.056..0.056 rows=1 loops=1)
+           Buffers: shared hit=3
+           ->  Seq Scan on sensor  (cost=0.00..6.56 rows=1 width=4) (actual time=0.029..0.046 rows=184 loops=1)
+                 Filter: ((tipo_sensor)::text = 'calidad_aire'::text)
+                 Rows Removed by Filter: 101
+                 Buffers: shared hit=3
+   ->  Index Scan using medicion_2021_sensor_idx on medicion_2021 medicion  (cost=0.29..89.12 rows=619 width=16) (actual time=0.072..0.341 rows=666 loops=1)
+         Index Cond: (id_sensor = $1)
+         Filter: ((fecha >= '2021-01-01 00:00:00'::timestamp without time zone) AND (fecha < '2021-02-01 00:00:00'::timestamp without time zone))
+         Rows Removed by Filter: 1740
+         Buffers: shared hit=28
+ Planning:
+   Buffers: shared hit=92
+ Planning Time: 0.237 ms
+ Execution Time: 0.567 ms
+(20 rows)
+
+                                                                                        QUERY PLAN                                                                                        
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=15663.37..15663.47 rows=38 width=226) (actual time=25.609..26.848 rows=23 loops=1)
+   Sort Key: (avg(m.pm25)) DESC
+   Sort Method: quicksort  Memory: 26kB
+   Buffers: shared hit=4930
+   ->  Finalize GroupAggregate  (cost=15652.65..15662.38 rows=38 width=226) (actual time=25.585..26.842 rows=23 loops=1)
+         Group Key: z.nombre_zona
+         Buffers: shared hit=4930
+         ->  Gather Merge  (cost=15652.65..15661.52 rows=76 width=250) (actual time=25.580..26.829 rows=47 loops=1)
+               Workers Planned: 2
+               Workers Launched: 2
+               Buffers: shared hit=4930
+               ->  Sort  (cost=14652.63..14652.73 rows=38 width=250) (actual time=23.337..23.343 rows=16 loops=3)
+                     Sort Key: z.nombre_zona
+                     Sort Method: quicksort  Memory: 26kB
+                     Buffers: shared hit=4930
+                     Worker 0:  Sort Method: quicksort  Memory: 26kB
+                     Worker 1:  Sort Method: quicksort  Memory: 26kB
+                     ->  Partial HashAggregate  (cost=14651.25..14651.63 rows=38 width=250) (actual time=23.302..23.308 rows=16 loops=3)
+                           Group Key: z.nombre_zona
+                           Batches: 1  Memory Usage: 24kB
+                           Buffers: shared hit=4914
+                           Worker 0:  Batches: 1  Memory Usage: 24kB
+                           Worker 1:  Batches: 1  Memory Usage: 24kB
+                           ->  Hash Join  (cost=609.61..14351.16 rows=60018 width=226) (actual time=0.883..17.959 rows=48350 loops=3)
+                                 Hash Cond: (s.id_zona = z.id_zona)
+                                 Buffers: shared hit=4914
+                                 ->  Hash Join  (cost=607.76..14188.42 rows=60018 width=12) (actual time=0.842..13.427 rows=48350 loops=3)
+                                       Hash Cond: (m.id_sensor = s.id_sensor)
+                                       Buffers: shared hit=4883
+                                       ->  Parallel Append  (cost=598.34..14019.11 rows=60019 width=12) (actual time=0.767..8.524 rows=48350 loops=3)
+                                             Buffers: shared hit=4874
+                                             ->  Parallel Bitmap Heap Scan on medicion_2016 m_1  (cost=891.48..4360.82 rows=19734 width=12) (actual time=1.517..5.358 rows=47552 loops=1)
+                                                   Recheck Cond: (pm25 IS NOT NULL)
+                                                   Buffers: shared hit=542
+                                                   ->  Bitmap Index Scan on medicion_2016_pm25_idx  (cost=0.00..879.64 rows=47362 width=0) (actual time=1.468..1.469 rows=47552 loops=1)
+                                                         Index Cond: (pm25 IS NOT NULL)
+                                                         Buffers: shared hit=133
+                                             ->  Parallel Bitmap Heap Scan on medicion_2021 m_6  (cost=598.34..2329.00 rows=18666 width=12) (actual time=0.780..3.369 rows=32174 loops=1)
+                                                   Recheck Cond: (pm25 IS NOT NULL)
+                                                   Buffers: shared hit=372
+                                                   ->  Bitmap Index Scan on medicion_2021_pm25_idx  (cost=0.00..590.41 rows=31732 width=0) (actual time=0.742..0.742 rows=32174 loops=1)
+                                                         Index Cond: (pm25 IS NOT NULL)
+                                                         Buffers: shared hit=91
+                                             ->  Parallel Bitmap Heap Scan on medicion_2020 m_5  (cost=380.77..1531.45 rows=11868 width=12) (actual time=0.153..0.664 rows=6721 loops=3)
+                                                   Recheck Cond: (pm25 IS NOT NULL)
+                                                   Heap Blocks: exact=31
+                                                   Buffers: shared hit=239
+                                                   ->  Bitmap Index Scan on medicion_2020_pm25_idx  (cost=0.00..375.73 rows=20175 width=0) (actual time=0.421..0.421 rows=20164 loops=1)
+                                                         Index Cond: (pm25 IS NOT NULL)
+                                                         Buffers: shared hit=59
+                                             ->  Parallel Bitmap Heap Scan on medicion_2023 m_8  (cost=344.61..1227.01 rows=10641 width=12) (actual time=0.464..1.828 rows=18398 loops=1)
+                                                   Recheck Cond: (pm25 IS NOT NULL)
+                                                   Heap Blocks: exact=168
+                                                   Buffers: shared hit=221
+                                                   ->  Bitmap Index Scan on medicion_2023_pm25_idx  (cost=0.00..340.09 rows=18089 width=0) (actual time=0.448..0.448 rows=18398 loops=1)
+                                                         Index Cond: (pm25 IS NOT NULL)
+                                                         Buffers: shared hit=53
+                                             ->  Parallel Bitmap Heap Scan on medicion_2026 m_11  (cost=74.81..3026.18 rows=2306 width=12) (actual time=0.538..1.984 rows=3999 loops=1)
+                                                   Recheck Cond: (pm25 IS NOT NULL)
+                                                   Heap Blocks: exact=2731
+                                                   Buffers: shared hit=2744
+                                                   ->  Bitmap Index Scan on medicion_2026_pm25_idx  (cost=0.00..73.83 rows=3921 width=0) (actual time=0.289..0.289 rows=3999 loops=1)
+                                                         Index Cond: (pm25 IS NOT NULL)
+                                                         Buffers: shared hit=13
+                                             ->  Parallel Bitmap Heap Scan on medicion_2017 m_2  (cost=5.06..81.33 rows=59 width=12) (actual time=0.046..0.054 rows=100 loops=1)
+                                                   Recheck Cond: (pm25 IS NOT NULL)
+                                                   Heap Blocks: exact=2
+                                                   Buffers: shared hit=4
+                                                   ->  Bitmap Index Scan on medicion_2017_pm25_idx  (cost=0.00..5.03 rows=100 width=0) (actual time=0.038..0.038 rows=100 loops=1)
+                                                         Index Cond: (pm25 IS NOT NULL)
+                                                         Buffers: shared hit=2
+                                             ->  Parallel Seq Scan on medicion_2025 m_10  (cost=0.00..429.97 rows=3953 width=12) (actual time=0.161..1.300 rows=6720 loops=1)
+                                                   Filter: (pm25 IS NOT NULL)
+                                                   Rows Removed by Filter: 21495
+                                                   Buffers: shared hit=264
+                                             ->  Parallel Seq Scan on medicion_2024 m_9  (cost=0.00..317.75 rows=5140 width=12) (actual time=0.020..1.185 rows=8738 loops=1)
+                                                   Filter: (pm25 IS NOT NULL)
+                                                   Rows Removed by Filter: 11280
+                                                   Buffers: shared hit=200
+                                             ->  Parallel Seq Scan on medicion_2018 m_3  (cost=0.00..187.12 rows=1388 width=12) (actual time=0.219..0.496 rows=2359 loops=1)
+                                                   Filter: (pm25 IS NOT NULL)
+                                                   Rows Removed by Filter: 7692
+                                                   Buffers: shared hit=128
+                                             ->  Parallel Seq Scan on medicion_2019 m_4  (cost=0.00..183.78 rows=1599 width=12) (actual time=0.238..0.469 rows=2719 loops=1)
+                                                   Filter: (pm25 IS NOT NULL)
+                                                   Rows Removed by Filter: 6763
+                                                   Buffers: shared hit=128
+                                             ->  Parallel Seq Scan on medicion_2022 m_7  (cost=0.00..44.60 rows=1252 width=12) (actual time=0.002..0.176 rows=2128 loops=1)
+                                                   Filter: (pm25 IS NOT NULL)
+                                                   Rows Removed by Filter: 14
+                                                   Buffers: shared hit=32
+                                             ->  Parallel Seq Scan on medicion_default m_12  (cost=0.00..0.00 rows=1 width=12) (actual time=0.000..0.000 rows=0 loops=1)
+                                                   Filter: (pm25 IS NOT NULL)
+                                       ->  Hash  (cost=5.85..5.85 rows=285 width=8) (actual time=0.064..0.064 rows=285 loops=3)
+                                             Buckets: 1024  Batches: 1  Memory Usage: 20kB
+                                             Buffers: shared hit=9
+                                             ->  Seq Scan on sensor s  (cost=0.00..5.85 rows=285 width=8) (actual time=0.006..0.028 rows=285 loops=3)
+                                                   Buffers: shared hit=9
+                                 ->  Hash  (cost=1.38..1.38 rows=38 width=222) (actual time=0.022..0.023 rows=38 loops=3)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                       Buffers: shared hit=3
+                                       ->  Seq Scan on zona z  (cost=0.00..1.38 rows=38 width=222) (actual time=0.011..0.014 rows=38 loops=3)
+                                             Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=171
+ Planning Time: 0.697 ms
+ Execution Time: 26.921 ms
+(107 rows)
+
+    particion     | tamano  
+------------------+---------
+ medicion_2016    | 51 MB
+ medicion_2017    | 1176 kB
+ medicion_2018    | 1872 kB
+ medicion_2019    | 1840 kB
+ medicion_2020    | 16 MB
+ medicion_2021    | 24 MB
+ medicion_2022    | 528 kB
+ medicion_2023    | 12 MB
+ medicion_2024    | 3184 kB
+ medicion_2025    | 4256 kB
+ medicion_2026    | 36 MB
+ medicion_default | 32 kB
+(12 rows)
+
+>>> 06_rendimiento.sql : SIN ERRORES
+
+4. Limpieza
+DROP DATABASE
+DROP DATABASE
+
+=================== RESUMEN ===================
+>>> 01_ddl.sql : SIN ERRORES
+>>> 03_migraciones.sql : 1 LINEA(S) CON ERROR
+>>> 02_datos_referencia.sql : SIN ERRORES
+>>> 04_consultas_obligatorias.sql : SIN ERRORES
+>>> 05_consultas_avanzadas.sql : SIN ERRORES
+>>> 06_rendimiento.sql : SIN ERRORES

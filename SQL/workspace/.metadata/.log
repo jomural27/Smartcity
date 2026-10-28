@@ -1,0 +1,23 @@
+!SESSION 2026-10-26 21:43:58.236 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25.0.4.1
+java.vendor=Microsoft
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en
+Framework arguments:  -f C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity\sql\05_consultas_avanzadas.sql -eclipse.keyring C:\Users\joseph}\AppData\Roaming\DBeaverData\secure\secure_storage -nosplash
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -f C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity\sql\05_consultas_avanzadas.sql -eclipse.keyring C:\Users\joseph}\AppData\Roaming\DBeaverData\secure\secure_storage -nosplash
+
+!ENTRY org.eclipse.ui 2 2 2026-10-26 21:44:03.840
+!MESSAGE Invalid preference category path: org.eclipse.debug.ui.ConsolePreferencePage (bundle: org.eclipse.ui.console, page: org.eclipse.ui.internal.console.ansi.preferences.AnsiConsolePreferencePage)
+!SESSION 2026-10-26 21:44:02.054 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25.0.4.1
+java.vendor=Microsoft
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en
+Framework arguments:  -f C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity\sql\05_consultas_avanzadas.sql -eclipse.keyring C:\Users\joseph}\AppData\Roaming\DBeaverData\secure\secure_storage -nosplash
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -f C:\Users\joseph}\OneDrive - Estudiantes ITCR\Documentos\Smartcity\sql\05_consultas_avanzadas.sql -eclipse.keyring C:\Users\joseph}\AppData\Roaming\DBeaverData\secure\secure_storage -nosplash
+
+!ENTRY org.eclipse.core.resources 2 10035 2026-10-26 21:44:05.137
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.ui 2 2 2026-10-26 21:44:10.460
+!MESSAGE Invalid preference category path: org.eclipse.debug.ui.ConsolePreferencePage (bundle: org.eclipse.ui.console, page: org.eclipse.ui.internal.console.ansi.preferences.AnsiConsolePreferencePage)
